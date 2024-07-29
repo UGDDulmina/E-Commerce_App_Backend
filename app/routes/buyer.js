@@ -29,7 +29,7 @@ router.post('/create',async (req, res)=> {
     
 })
 
-router.get('/', async (res) =>{
+router.get('/', async (req , res) =>{
     try {
         const buyer = await Buyer.find();
         const buyerResponse = buyer.map(buyer => 
@@ -37,26 +37,28 @@ router.get('/', async (res) =>{
         );
         res.status(200).json(buyerResponse)
     } catch(err){
-        res.status(500).json({message:err.message})
+        res.status(400).json({message:err.message})
     }
 
 })
 
-router.get('/:id', async (req,res)=>{
+router.get('/:id', async (req , res)=>{
 
     try {
-        const buyer = await Buyer.findById(req.params.id);
-        const buyerResponse = buyer.map(buyer =>
-            plainToClass(BuyerResponseDto, buyer.toObject())
-        )
-        if(!buyerResponse) return res.status(400).json({message: 'Buyer not found!'})
+        const buyerRequestDto = plainToClass(BuyerRequestDto, req.body);
+        const buyer = await Buyer.findById(req.params.id,buyerRequestDto);
+        if (!buyer) return res.status(404).json({ message: 'Buyer not found!' });
+        
+        const buyerResponse =   plainToClass(BuyerResponseDto, buyer.toObject())
         res.status(200).json(buyerResponse);
+
+
     } catch (err){
         res.status(500).json({ message: err.message });
     }
 })
 
-router.put('/:id', async (req, res)=>{
+router.put('/update/:id', async (req, res)=>{
     try{
         const buyerRequestDto = plainToClass(BuyerRequestDto, req.body);
 

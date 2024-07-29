@@ -1,5 +1,3 @@
- 
-
 class buyerResponseDto {
     firstName;
     lastName;

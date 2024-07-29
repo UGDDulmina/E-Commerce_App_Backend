@@ -1,5 +1,4 @@
- 
- class buyerRequestDto {
+class buyerRequestDto {
 
     firstName;
     lastName;

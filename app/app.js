@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const helmet = require('helmet');
-const notFoundHandler = require('./middleware/404Handler');
 const errorHandler = require('./middleware/errorHander');
 const bodyParser = require('body-parser');
 const { mongoose } = require('mongoose');
 const buyersRouter = require('./routes/buyer');
+const adminRouter = require('./routes/admin');
  
  
 
@@ -16,13 +16,12 @@ app.get('/', (res) => {
 
 app.use(errorHandler);
 
-// app.use(notFoundHandler);
-
 app.use(helmet());
 
 app.use(bodyParser.json())
 
 app.use('/buyers', buyersRouter);
+app.use('/admin', adminRouter);
 
 require('dotenv').config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
