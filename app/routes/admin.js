@@ -2,8 +2,6 @@ const express = require('express');
 const Admin = require('../models/schema/admin');
 const { plainToClass } = require('class-transformer');
 const { validate } = require('class-validator');
-const {AdminRequestDto} = require('../models/dto/request/admin');
-const {AdminResponseDto} = require('../models/dto/response/admin')
 const router = express.Router();
 
 

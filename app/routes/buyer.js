@@ -2,27 +2,18 @@ const express = require('express');
 const Buyer = require('../models/schema/buyer');
 const { plainToClass } = require('class-transformer');
 const { validate } = require('class-validator');
-const {BuyerRequestDto} = require('../models/dto/request/buyer');
-const {BuyerResponseDto} = require('../models/dto/response/buyer')
 const router = express.Router();
 
 
 
 router.post('/create',async (req, res)=> {
 
-    const buyerRequestDto = plainToClass(BuyerRequestDto, req.body);
-
-    const errors = await validate(buyerRequestDto);
-    if(errors.lenght > 0){
-        return res.status(400).json({ errors });
-    }
-
     try {
-        const newBuyer = new Buyer(buyerRequestDto);
-        await newBuyer.save();
+        const { firstName, lastName, email, password } = req.body;
 
-        const buyerResponseDto= plainToClass(BuyerResponseDto, newBuyer.toObject());
-        res.status(201).json(buyerResponseDto);
+        const newBuyer = new Buyer({ firstName, lastName, email, password });
+        await newBuyer.save();
+        res.status(201).json(newBuyer);
     } catch (err){
         res.status(400).json({message: err.message})
     }
@@ -32,10 +23,7 @@ router.post('/create',async (req, res)=> {
 router.get('/', async (req , res) =>{
     try {
         const buyer = await Buyer.find();
-        const buyerResponse = buyer.map(buyer => 
-            plainToClass(BuyerResponseDto, buyer.toObject())
-        );
-        res.status(200).json(buyerResponse)
+        res.status(200).json(buyer)
     } catch(err){
         res.status(400).json({message:err.message})
     }
@@ -45,12 +33,11 @@ router.get('/', async (req , res) =>{
 router.get('/:id', async (req , res)=>{
 
     try {
-        const buyerRequestDto = plainToClass(BuyerRequestDto, req.body);
-        const buyer = await Buyer.findById(req.params.id,buyerRequestDto);
+        const buyer = await Buyer.findById(req.params.id );
         if (!buyer) return res.status(404).json({ message: 'Buyer not found!' });
         
-        const buyerResponse =   plainToClass(BuyerResponseDto, buyer.toObject())
-        res.status(200).json(buyerResponse);
+         
+        res.status(200).json(buyer);
 
 
     } catch (err){
@@ -60,24 +47,14 @@ router.get('/:id', async (req , res)=>{
 
 router.put('/update/:id', async (req, res)=>{
     try{
-        const buyerRequestDto = plainToClass(BuyerRequestDto, req.body);
-
-        const errors = await validate(buyerRequestDto);
-        if (errors.length > 0) {
-            return res.status(400).json({ errors });
-        }
-
         const buyer = await Buyer.findByIdAndUpdate(
             req.params.id,
-            buyerRequestDto,
             { new:true }
         );
 
         if (!buyer) return res.status(404).json({ message: 'Buyer not found!' });
         
-        const buyerResponse =   plainToClass(BuyerResponseDto, buyer.toObject())
-        res.status(200).json(buyerResponse);
-
+        res.status(200).json(buyer);
         
     } catch(err){
         res.status(400).json({message: err.message});
