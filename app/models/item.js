@@ -13,10 +13,11 @@ const itemSchema = new mongoose.Schema({
         type: Number,
         required:true,
     },
-    stock:{
+    quantity:{
         type: Number,
-        required:true,
-    }
+        default: 1,
+    },
+    imageUrl: String
 })
 
 module.exports = mongoose.model('item',itemSchema)

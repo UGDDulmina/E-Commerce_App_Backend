@@ -1,7 +1,5 @@
 const express = require('express');
-const Buyer = require('../models/schema/buyer');
-const { plainToClass } = require('class-transformer');
-const { validate } = require('class-validator');
+const Buyer = require('../models/buyer');
 const router = express.Router();
 
 

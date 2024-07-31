@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const { mongoose } = require('mongoose');
 const buyersRouter = require('./routes/buyer');
 const adminRouter = require('./routes/admin');
+const itemRouter = require('./routes/item');
+const cartRouter = require('./routes/cart');
  
  
 
@@ -22,6 +24,8 @@ app.use(bodyParser.json())
 
 app.use('/buyers', buyersRouter);
 app.use('/admin', adminRouter);
+app.use('/items', itemRouter);
+app.use('/carts', cartRouter);
 
 require('dotenv').config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
