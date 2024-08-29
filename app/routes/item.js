@@ -47,6 +47,7 @@ router.put('/update/:id', async (req, res)=>{
     try{
         const item = await Item.findByIdAndUpdate(
             req.params.id,
+            req.body,
             { new:true }
         );
 

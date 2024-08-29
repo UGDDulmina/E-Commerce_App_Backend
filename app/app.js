@@ -9,6 +9,7 @@ const buyersRouter = require('./routes/buyer');
 const adminRouter = require('./routes/admin');
 const itemRouter = require('./routes/item');
 const cartRouter = require('./routes/cart');
+const sellerRouter = require('./routes/seller');
  
  
 
@@ -26,6 +27,7 @@ app.use('/buyers', buyersRouter);
 app.use('/admin', adminRouter);
 app.use('/items', itemRouter);
 app.use('/carts', cartRouter);
+app.use('/seller', sellerRouter);
 
 require('dotenv').config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
