@@ -13,10 +13,7 @@ router.post('/create',async (req, res)=> {
          lastName, 
          email, 
          password,
-         description,
-         telephoneNumbers,
-         socialMediaLinks,
-
+         telephoneNumbers
         } = req.body;
 
         const newSeller = new Seller
@@ -25,9 +22,7 @@ router.post('/create',async (req, res)=> {
             lastName,
             email,
             password,
-            description,
             telephoneNumbers,
-            socialMediaLinks 
         });
         await newSeller.save();
         res.status(201).json(newSeller);

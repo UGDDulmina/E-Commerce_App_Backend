@@ -10,24 +10,23 @@ const adminRouter = require('./routes/admin');
 const itemRouter = require('./routes/item');
 const cartRouter = require('./routes/cart');
 const sellerRouter = require('./routes/seller');
- 
- 
+const cors = require('cors');
 
-app.get('/', (res) => {
-    res.send('Hello World!');
-});
-
+ 
 app.use(errorHandler);
 
 app.use(helmet());
-
+app.use(cors({
+    origin: 'http://localhost:5173', 
+}));
 app.use(bodyParser.json())
+
 
 app.use('/buyers', buyersRouter);
 app.use('/admin', adminRouter);
 app.use('/items', itemRouter);
 app.use('/carts', cartRouter);
-app.use('/seller', sellerRouter);
+app.use('/sellers', sellerRouter);
 
 require('dotenv').config();
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
@@ -42,6 +41,12 @@ mongoose.connect(dbConnectionString, {
 })
 
 
+
+
+
+
 app.listen(port, () => {
     console.log(`Server is running now!`);
 });
+
+
