@@ -4,13 +4,11 @@ const router = express.Router();
 
 
 
-router.post('/create',async (req, res)=> {
+router.post('/signup',async (req, res)=> {
 
     try {
         const { firstName, lastName, email, password } = req.body;
-
-        const newBuyer = new Buyer({ firstName, lastName, email, password });
-        await newBuyer.save();
+        const newBuyer = await Buyer.signup(firstName,lastName,email,password);
         res.status(201).json(newBuyer);
     } catch (err){
         res.status(400).json({message: err.message})

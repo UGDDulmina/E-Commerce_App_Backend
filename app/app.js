@@ -40,11 +40,6 @@ mongoose.connect(dbConnectionString, {
     console.error('Failde to connect to MongoDB', err)
 })
 
-
-
-
-
-
 app.listen(port, () => {
     console.log(`Server is running now!`);
 });

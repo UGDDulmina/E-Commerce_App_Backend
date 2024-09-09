@@ -20,6 +20,6 @@ const cartSchema = new mongoose.Schema({
         default: 0
       }
 
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('cart',cartSchema)

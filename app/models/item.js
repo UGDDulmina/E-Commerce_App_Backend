@@ -18,6 +18,6 @@ const itemSchema = new mongoose.Schema({
         default: 1,
     },
     imageUrl: String
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('item',itemSchema)
