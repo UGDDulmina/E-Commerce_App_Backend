@@ -1,6 +1,11 @@
 const express = require('express');
 const Buyer = require('../models/buyer');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+
+const generateToken = (_id) => {
+    return jwt.sign({_id},process.env.SECRET,{expiresIn: '3d'})
+} 
 
 
 
@@ -9,7 +14,9 @@ router.post('/signup',async (req, res)=> {
     try {
         const { firstName, lastName, email, password } = req.body;
         const newBuyer = await Buyer.signup(firstName,lastName,email,password);
-        res.status(201).json(newBuyer);
+        
+        const token = generateToken(newBuyer._id)
+        res.status(201).json({message:'Signup successfull!', token});
     } catch (err){
         res.status(400).json({message: err.message})
     }

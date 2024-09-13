@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 
-
 const buyerSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -25,6 +24,10 @@ const buyerSchema = new mongoose.Schema({
 buyerSchema.statics.signup = async function (email, password,firstName,lastName){
 
     const exists = await this.findOne({email})
+
+    if(!email || !password || !firstName || !lastName){
+        throw Error('All fields must be filled')
+    }
 
     if(exists){
         throw Error('Email already in use')

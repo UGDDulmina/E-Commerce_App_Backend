@@ -31,33 +31,25 @@ const sellerSchema = new mongoose.Schema({
     
 },{timestamps: true})
 
-sellerSchema.statics.signup = async function(
-                                              firstName,
-                                              lastName,
-                                              telephoneNumbers,
-                                              email,
-                                              password
-                                            )
-{
+sellerSchema.statics.signup = async function (firstName,lastName,description,telephoneNumbers,email,password){
+
     const exists = await this.findOne({email})
 
+    if(!email || !password || !firstName || !lastName || !telephoneNumbers){
+        throw Error('All fields must be filled')
+    }
+
     if(exists){
-        throw Error('Email alredy in use')
+        throw Error('Email already in use')
     }
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password,salt)
 
-    const seller = await this.create({
-                                       firstName,
-                                       lastName,
-                                    //    description,
-                                    //    socialMediaLinks,
-                                       telephoneNumbers,
-                                       email,
-                                       password:hash
-                                    })
-    return seller                                
+    const seller = await this.create({email, password: hash, firstName, lastName,description,telephoneNumbers,})
+     
+    return seller
+    
 }
 
 module.exports = mongoose.model('seller',sellerSchema)
