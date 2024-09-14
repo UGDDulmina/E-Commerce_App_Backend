@@ -52,4 +52,24 @@ sellerSchema.statics.signup = async function (firstName,lastName,description,tel
     
 }
 
+sellerSchema.statics.login = async function(email,password){
+    
+    const seller = await this.findOne({email})
+
+    if(!email || !password){
+        throw Error('All fields must be filled')
+    } 
+    if(!seller){
+        throw Error('Invalied email address!')
+    }
+
+    const match = await bcrypt.compare(password, seller.password)
+
+    if(!match){
+        throw Error('Invalied password!')
+    }
+
+    return seller
+}
+
 module.exports = mongoose.model('seller',sellerSchema)
