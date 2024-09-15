@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+ 
 
 const sellerSchema = new mongoose.Schema({
     firstName: {
@@ -33,22 +34,26 @@ const sellerSchema = new mongoose.Schema({
 
 sellerSchema.statics.signup = async function (firstName,lastName,description,telephoneNumbers,email,password){
 
-    const exists = await this.findOne({email})
+    const existSeller = await this.findOne({email});
+    const existBuyer = await mongoose.model('buyer').findOne({ email });
 
     if(!email || !password || !firstName || !lastName || !telephoneNumbers){
         throw Error('All fields must be filled')
     }
 
-    if(exists){
-        throw Error('Email already in use')
+    if (existSeller) {
+        throw Error('Email already in use');
+    }
+    if (existBuyer) {
+        throw Error('This Email already used for signup as buyer!');
     }
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password,salt)
 
-    const seller = await this.create({email, password: hash, firstName, lastName,description,telephoneNumbers,})
+    const seller = await this.create({email, password: hash, firstName, lastName,description,telephoneNumbers})
      
-    return seller
+    return seller;
     
 }
 

@@ -21,16 +21,22 @@ const buyerSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-buyerSchema.statics.signup = async function (email, password,firstName,lastName){
+buyerSchema.statics.signup = async function (firstName,lastName,email, password){
 
-    const exists = await this.findOne({email})
+    
 
     if(!email || !password || !firstName || !lastName){
         throw Error('All fields must be filled')
     }
+    
+    const existBuyer = await this.findOne({email});
+    const existSeller = await mongoose.model('seller').findOne({ email });
 
-    if(exists){
-        throw Error('Email already in use')
+    if (existBuyer) {
+        throw Error('Email already in use');
+    }
+    if (existSeller) {
+        throw Error('This Email already used for signup as seller!');
     }
 
     const salt = await bcrypt.genSalt(10)
