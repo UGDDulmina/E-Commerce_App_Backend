@@ -10,7 +10,6 @@ const adminRouter = require('./routes/admin');
 const itemRouter = require('./routes/item');
 const cartRouter = require('./routes/cart');
 const sellerRouter = require('./routes/seller');
-const authRouter = require('./routes/auth');
 const cors = require('cors');
 
  
@@ -33,7 +32,7 @@ app.use('/admin', adminRouter);
 app.use('/items', itemRouter);
 app.use('/carts', cartRouter);
 app.use('/sellers', sellerRouter);
-app.use('/auth', authRouter);
+ 
 
 
 require('dotenv').config();
